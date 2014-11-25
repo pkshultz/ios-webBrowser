@@ -17,7 +17,7 @@
 @property (nonatomic, strong) UITapGestureRecognizer* tapGesture;
 @property (nonatomic, strong) UIPanGestureRecognizer* panGesture;
 
-//Added after the 
+//Added for the inappropriate gestures assignment
 
 @property (nonatomic, strong) UIPinchGestureRecognizer* pinchGesture;
 @property (nonatomic, strong) UILongPressGestureRecognizer* longPressGesture;

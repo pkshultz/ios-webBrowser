@@ -16,7 +16,7 @@
 
 - (void) floatingToolbar: (BLCAwsomeFloatingToolbar* )toolbar didSelectButtonWithTitle:(NSString* )title;
 - (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset;
-- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didPinchWithOffset:(CGPoint)offset;
+- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didPinchWithOffset:(CGFloat)offset;
 - (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didLongPressWithOffset:(CGPoint)offset;
 
 @end

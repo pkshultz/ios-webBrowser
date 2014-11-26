@@ -64,6 +64,11 @@
     self.view = mainView;
 }
 
+- (void) viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+//    [self viewWillLayoutSubviews];
+}
+
 #pragma mark - UITextFieldDelegate
 
 - (BOOL) textFieldShouldReturn:(UITextField* )textField
@@ -175,7 +180,7 @@
     {
         [self.activityIndicator stopAnimating];
     }
-    
+    [self.view bringSubviewToFront:self.awesomeToolbar];
     [self.awesomeToolbar setEnabled:[self.webView canGoBack] forButtonWithTitle:kBLCWebBrowserBackString];
     [self.awesomeToolbar setEnabled:[self.webView canGoForward] forButtonWithTitle:kBLCWebBrowserForwardString];
     [self.awesomeToolbar setEnabled:self.frameCount > 0 forButtonWithTitle:kBLCWebBrowserStopString];
@@ -210,22 +215,14 @@
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 75);
+    if (self.awesomeToolbar.frame.size.height == 0 && self.awesomeToolbar.frame.size.width == 0 ){
+        self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 75);
+    }
+
     
 }
 
-- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset
-{
-    CGPoint startingPoint = toolbar.frame.origin;
-    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
-    
-    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
-    
-    if (CGRectContainsRect(self.view.bounds, potentialNewFrame))
-    {
-        toolbar.frame = potentialNewFrame;
-    }
-}
+
 
 #pragma mark - BLCAwesomeFloatingToolbarDelegate
 
@@ -250,6 +247,52 @@
     {
         [self.webView reload];
     }
+}
+
+- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset
+{
+    CGPoint startingPoint = toolbar.frame.origin;
+    CGPoint newPoint = CGPointMake(startingPoint.x + offset.x, startingPoint.y + offset.y);
+    
+    CGRect potentialNewFrame = CGRectMake(newPoint.x, newPoint.y, CGRectGetWidth(toolbar.frame), CGRectGetHeight(toolbar.frame));
+    
+    
+    
+    if (CGRectContainsRect(self.view.bounds, potentialNewFrame))
+    {
+        toolbar.frame = potentialNewFrame;
+    }
+}
+
+- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didPinchWithOffset:(CGFloat)offset
+{
+    CGRect newFrame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y, CGRectGetWidth(toolbar.frame) * sqrt(offset), CGRectGetHeight(toolbar.frame) * sqrt(offset));
+    
+    if (CGRectGetWidth(toolbar.frame) * sqrt(offset) < 60)
+    {
+        newFrame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y, 224, 60);
+    
+    }
+    
+    if (CGRectGetWidth(toolbar.frame) * sqrt(offset) < 224)
+    {
+                newFrame = CGRectMake(toolbar.frame.origin.x, toolbar.frame.origin.y, 224, 60);
+    }
+
+    
+    
+    if (CGRectContainsRect(self.view.bounds, newFrame))
+    {
+        toolbar.frame = newFrame;
+    }
+    
+    
+    
+}
+
+- (void) floatingToolbar:(BLCAwsomeFloatingToolbar *)toolbar didLongPressWithOffset:(CGPoint)offset
+{
+    
 }
 
 
